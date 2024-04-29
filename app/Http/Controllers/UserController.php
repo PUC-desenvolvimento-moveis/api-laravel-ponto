@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Service\UserService;
 
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class UserController extends Controller
         $this->service = $service;
     }
 
-    public function  index()
+    public function index()
     {
         try {
            $this->service->index();
@@ -45,7 +46,7 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        
+
     }
 
     public function destroy($id)
