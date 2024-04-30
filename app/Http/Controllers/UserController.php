@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Service\UserService;
-
-use Illuminate\Http\Request;
-
 use App\Models\User;
+use App\Http\Service\UserService;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -20,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         try {
-           $this->service->index();
+            $this->service->index();
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -30,23 +28,26 @@ class UserController extends Controller
     {
         try {
             $this->service->show($id);
-         } catch (\Throwable $th) {
-             throw $th;
-         }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function store(Request $request)
     {
         try {
             $this->service->store($request);
-         } catch (\Throwable $th) {
-             throw $th;
-         }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, User $user)
     {
-
+        //
     }
 
     public function destroy($id)
