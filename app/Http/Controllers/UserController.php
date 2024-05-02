@@ -73,6 +73,8 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->cpf = $request->cpf;
         $user->telefene = $request->telefene;
+        $token = $request->session()->token();
+        $user->remember_token= $token = csrf_token();
         $user->save();
 
         return response()->json([
