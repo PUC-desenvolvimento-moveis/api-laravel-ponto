@@ -72,13 +72,12 @@ class UserController extends Controller
         $user->password = $request->password;
         $user->email = $request->email;
         $user->cpf = $request->cpf;
-        $user->telefone = $request->telefone;
+        $user->telefene = $request->telefene;
         $user->save();
 
         return response()->json([
             "message" => "user record created"
-        ], 201); 
-
+        ], 201);
     }
 
     public function update(Request $request, $id)

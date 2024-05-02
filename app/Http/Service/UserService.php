@@ -27,7 +27,7 @@ class UserService
         $user->password = $request->password;
         $user->email = $request->email;
         $user->cpf = $request->cpf;
-        $user->telefone = $request->telefone;
+        $user->telefene = $request->telefene;
         $user->save();
 
         return response()->json([
