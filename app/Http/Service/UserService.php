@@ -28,7 +28,6 @@ class UserService
         $user->email = $request->email;
         $user->cpf = $request->cpf;
         $user->telefone = $request->telefone;
-        //$user->course = $request->course;
         $user->save();
 
         return response()->json([
