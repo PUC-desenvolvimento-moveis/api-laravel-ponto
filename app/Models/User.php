@@ -47,4 +47,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function pontos()
+    {
+        return $this->hasMany(Ponto::class);
+    }
+
+    /**
+     * Definindo relacionamento entre Gestor e Contrato.
+     */
 }

@@ -45,7 +45,7 @@ class UserService
         $user->password = $request->password ?? $user->password;
         $user->email = $request->email ?? $user->email;
         $user->cpf = $request->cpf ?? $user->cpf;
-        $user->telefone = $request->telefone ?? $user->telefone;
+        $user->telefene = $request->telefene ?? $user->telefene;
         $user->save();
         return response()->json([
             "message" => "User updated successfully"
