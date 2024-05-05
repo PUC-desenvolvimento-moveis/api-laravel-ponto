@@ -59,6 +59,10 @@ class UserController extends Controller
         return response()->json($users); 
     }
 
+    public function getPontos(int $id){
+        return response()->json($this->service->getPontos($id),201);        
+    }
+
     public function show($id)
     {
         $user = User::find($id);

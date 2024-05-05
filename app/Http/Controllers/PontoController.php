@@ -54,12 +54,10 @@ class PontoController extends Controller
             'user_id' => $validatedData['user_id'],
         ]);
         
-        return  response()->json(['message' => 'erro ao criar novo ponto' ], 200);
-
-            return response()->json(['message' => 'Ponto criado com sucesso', 'ponto' => $ponto], 201);
-
-            
+            return response()->json(['message' => 'Ponto criado com sucesso', 'ponto' => $ponto], 201);         
     }
+
+    
 
     public function show($id)
     {

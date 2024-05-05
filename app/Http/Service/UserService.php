@@ -20,6 +20,12 @@ class UserService
         return response()->json($user);
     }
 
+
+    public function getPontos($id){
+        $user = User::find($id);
+        return $user->pontos;          
+    }
+
     public function store(Request $request)
     {
         $user = new User;
