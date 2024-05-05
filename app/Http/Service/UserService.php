@@ -26,10 +26,13 @@ class UserService
     }
 
 
-    public function getPontos($id)
+    public function getPontos($id): ?Collection
     {
         $user = User::find($id);
-        return $user->pontos;
+        if ($user->pontos)
+            return $user->pontos;
+
+        return null;
     }
 
     public function store(Request $request): ?User
