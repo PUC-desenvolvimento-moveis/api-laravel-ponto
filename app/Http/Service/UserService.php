@@ -5,28 +5,34 @@ namespace App\Http\Service;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserService
 {
-    public function  index()
+    public function index(): ?Collection
     {
-        $users = User::all();
-        return response()->json($users);
+        if ($users = User::all())
+            return $users;
+
+        return null;
     }
 
-    public function show($id)
+    public function show($id): ?User
+    {
+        if ($user = User::find($id));
+        return $user;
+
+        return null;
+    }
+
+
+    public function getPontos($id)
     {
         $user = User::find($id);
-        return response()->json($user);
+        return $user->pontos;
     }
 
-
-    public function getPontos($id){
-        $user = User::find($id);
-        return $user->pontos;          
-    }
-
-    public function store(Request $request)
+    public function store(Request $request): ?User
     {
         $user = new User;
         $user->name = $request->name;
@@ -34,18 +40,21 @@ class UserService
         $user->email = $request->email;
         $user->cpf = $request->cpf;
         $user->telefene = $request->telefene;
+        $token = $request->session()->token();
+        $user->remember_token = $token = csrf_token();
         $user->save();
 
-        return response()->json([
-            "message" => "user record created"
-        ], 201);
+        if ($user)
+            return $user;
+
+        return null;
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): ?User
     {
         $user = User::find($id);
         if (!$user) {
-            return response()->json(["message" => "User not found"], 404);
+            return null;
         }
         $user->name = $request->name ?? $user->name;
         $user->password = $request->password ?? $user->password;
@@ -53,20 +62,17 @@ class UserService
         $user->cpf = $request->cpf ?? $user->cpf;
         $user->telefene = $request->telefene ?? $user->telefene;
         $user->save();
-        return response()->json([
-            "message" => "User updated successfully"
-        ], 200);
+        if ($user)
+            return $user;
     }
 
-    public function destroy($id)
+    public function destroy($id): bool
     {
         $user = User::find($id);
-        if (!$user) {
-            return response()->json(["message" => "User not found"], 404);
-        }
+        if (!$user)
+            return false;
+
         $user->delete();
-        return response()->json([
-            "message" => "User deleted successfully"
-        ], 200);
+        return true;
     }
 }

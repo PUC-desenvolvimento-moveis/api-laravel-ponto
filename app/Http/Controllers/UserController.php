@@ -15,103 +15,90 @@ class UserController extends Controller
         $this->service = $service;
     }
 
-  /*   public function index()
-    {
-        try {
-            $this->service->index();
-        } catch (\Throwable $th) {
-            throw $th;
-        }
-    }
-
-    public function show($id)
-    {
-        try {
-            $this->service->show($id);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
-    }
-
-    public function store(Request $request)
-    {
-        try {
-            $this->service->store($request);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
-    }
-
-    
-    public function update(Request $request, User $user)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-    } */
-
 
     public function  index()
     {
-        $users = User::all();
-        return response()->json($users); 
-    }
+        try {
+            if ($this->service->index())
+                return response()->json($this->service->index(), 201);
 
-    public function getPontos(int $id){
-        return response()->json($this->service->getPontos($id),201);        
+            return response()->json(["message" => "User not found"], 404);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "error" => $th
+            ]);
+        }
     }
 
     public function show($id)
     {
-        $user = User::find($id);
-        return response()->json($user);
+        try {
+            $user = $this->service->show($id);
+            if ($user)
+                return response()->json($user, 201);
+
+            return response()->json(["message" => "User not found"], 404);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "error" => $th
+            ]);
+        }
     }
 
     public function store(Request $request)
     {
-        $user = new User;
-        $user->name = $request->name;
-        $user->password = $request->password;
-        $user->email = $request->email;
-        $user->cpf = $request->cpf;
-        $user->telefene = $request->telefene;
-        $token = $request->session()->token();
-        $user->remember_token= $token = csrf_token();
-        $user->save();
-
-        return response()->json([
-            "message" => "user record created"
-        ], 201);
+        try {
+            $user = $this->service->store($request);
+            if ($user) {
+                return response()->json([
+                    "message" => "user record created"
+                ], 201);
+            }
+            return response()->json([
+                "message" => "not record"
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "error" => $th
+            ]);
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json(["message" => "User not found"], 404);
+        try {
+            if ($this->service->update($request, $id) == null)
+                return response()->json(["message" => "User not found"], 404);
+
+            return response()->json([
+                "message" => "User updated successfully"
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "error" => $th
+            ]);
         }
-        $user->name = $request->name ?? $user->name;
-        $user->password = $request->password ?? $user->password;
-        $user->email = $request->email ?? $user->email;
-        $user->cpf = $request->cpf ?? $user->cpf;
-        $user->telefone = $request->telefone ?? $user->telefone;
-        $user->save();
-        return response()->json([
-            "message" => "User updated successfully"
-        ], 200);
     }
 
     public function destroy($id)
     {
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json(["message" => "User not found"], 404);
+        try {
+            if (!$this->service->destroy($id))
+                return response()->json(["message" => "User not found"], 404);
+
+            return response()->json([
+                "message" => "User deleted successfully"
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "error" => $th
+            ]);
         }
-        $user->delete();
-        return response()->json([
-            "message" => "User deleted successfully"
-        ], 200);
+    }
+
+
+    public function getPontos(int $id)
+    {
+        return response()->json($this->service->getPontos($id), 201);
     }
 }
