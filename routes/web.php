@@ -7,9 +7,12 @@ use App\Http\Controllers\PontoController;
 
 Route::get('users', [UserController::class, 'index']);
 Route::post('users', [UserController::class, 'store']);
-Route::get('users/{id}', [UserController::class, 'show']);
-Route::put('users/{id}', [UserController::class, 'update']);
-Route::delete('users/{id}', [UserController::class, 'destroy']);
+
+Route::get('user/{id}', [UserController::class, 'show']);
+Route::put('user/{id}', [UserController::class, 'update']);
+Route::delete('user/{id}', [UserController::class, 'destroy']);
+Route::get('auth', [UserController::class, 'getAuth'])->middleware('auth:sanctum');
+
 
 Route::get('users/pontos/{id}', [UserController::class, 'getPontos']);
 

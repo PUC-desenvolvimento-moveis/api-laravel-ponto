@@ -2,9 +2,10 @@
 
 namespace App\Http\Service;
 
-use Illuminate\Http\Request;
-
 use App\Models\User;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Collection;
 
 class UserService
@@ -26,6 +27,11 @@ class UserService
     }
 
 
+    public function login()
+    {
+    }
+
+
     public function getPontos($id): ?Collection
     {
         $user = User::find($id);
@@ -35,20 +41,30 @@ class UserService
         return null;
     }
 
-    public function store(Request $request): ?User
-    {
-        $user = new User;
-        $user->name = $request->name;
-        $user->password = $request->password;
-        $user->email = $request->email;
-        $user->cpf = $request->cpf;
-        $user->telefene = $request->telefene;
-        $token = $request->session()->token();
-        $user->remember_token = $token = csrf_token();
-        $user->save();
+    public function getAuth(Request $request) : ?User{
+     return $request->user();
+    }
 
-        if ($user)
-            return $user;
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'cpf' => 'required|string|min:11|max:11',
+        ]);
+
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+            'telefene' => $request->telefene ?? null,
+        ]);
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        if (!empty($user))
+            return $token;
 
         return null;
     }

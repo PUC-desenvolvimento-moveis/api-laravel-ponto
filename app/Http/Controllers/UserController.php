@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Http\Service\UserService;
 use Illuminate\Http\Request;
+use App\Http\Service\UserService;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -45,18 +46,29 @@ class UserController extends Controller
         }
     }
 
+    public function getAuth(Request $request)
+    {
+        $auth = $this->service->getAuth($request);
+        if (!empty($auth)) {
+            return response()->json([
+                'auth' => $auth,
+            ], 201);
+        }
+    }
+
+
+
+
     public function store(Request $request)
     {
         try {
-            $user = $this->service->store($request);
-            if ($user) {
+            $token = $this->service->store($request);
+            if ($token != null) {
                 return response()->json([
-                    "message" => "user record created"
+                    'access_token' => $token,
+                    'token_type' => 'Bearer',
                 ], 201);
             }
-            return response()->json([
-                "message" => "not record"
-            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 "error" => $th
