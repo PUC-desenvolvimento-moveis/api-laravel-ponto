@@ -5,6 +5,7 @@ namespace App\Http\Service;
 use App\Models\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -27,8 +28,17 @@ class UserService
     }
 
 
-    public function login()
+    public function login(Request $request): ?string
     {
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return null;
+        }
+
+        $user = User::where('email', $request['email'])->firstOrFail();
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return
+            $token;
     }
 
 
@@ -41,8 +51,9 @@ class UserService
         return null;
     }
 
-    public function getAuth(Request $request) : ?User{
-     return $request->user();
+    public function auth(Request $request): ?User
+    {
+        return $request->user();
     }
 
     public function store(Request $request)

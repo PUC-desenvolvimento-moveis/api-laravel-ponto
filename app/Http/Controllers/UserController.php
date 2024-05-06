@@ -46,9 +46,9 @@ class UserController extends Controller
         }
     }
 
-    public function getAuth(Request $request)
+    public function auth(Request $request)
     {
-        $auth = $this->service->getAuth($request);
+        $auth = $this->service->auth($request);
         if (!empty($auth)) {
             return response()->json([
                 'auth' => $auth,
@@ -75,6 +75,23 @@ class UserController extends Controller
             ]);
         }
     }
+
+
+    public function login(Request $request)
+    {
+        $token = $this->service->login($request);
+        if ($token == null) {
+            return response()->json([
+                'message' => 'Invalid login details'
+            ], 401);
+        }
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+        ]);
+    }
+
 
     public function update(Request $request, $id)
     {
