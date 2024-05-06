@@ -13,10 +13,12 @@ class VerifyCsrfToken extends Middleware
      */
 
      protected $except = [
-        'users',
+       /*  'users',
         'users/*',
         'pontos',
-        'pontos/*',
-    ];
+        'pontos/*', */
+        'v1',
+        'v1/*'
+    ]; 
    
 }

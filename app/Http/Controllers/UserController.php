@@ -83,13 +83,13 @@ class UserController extends Controller
         if ($token == null) {
             return response()->json([
                 'message' => 'Invalid login details'
-            ], 401);
+            ], 404);
         }
 
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
-        ]);
+        ],201);
     }
 
 

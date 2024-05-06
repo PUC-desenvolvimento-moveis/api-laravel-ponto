@@ -28,17 +28,16 @@ class UserService
     }
 
 
-    public function login(Request $request): ?string
+    public function login(Request $request)
     {
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($request->only('email', 'password'))) 
             return null;
-        }
-
+        
         $user = User::where('email', $request['email'])->firstOrFail();
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return
-            $token;
+        return $token;
+            
     }
 
 
