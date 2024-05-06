@@ -9,27 +9,21 @@ Route::post('login', [UserController::class, 'login']);
 Route::post('users', [UserController::class, 'store']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-Route::get('users', [UserController::class, 'index']);
-Route::get('user/{id}', [UserController::class, 'show']);
-Route::put('user/{id}', [UserController::class, 'update']);
-Route::delete('user/{id}', [UserController::class, 'destroy']);
-Route::get('auth', [UserController::class, 'auth']);
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index']);
+        Route::get('/{id}', [UserController::class, 'show']);
+        Route::put('/{id}', [UserController::class, 'update']);
+        Route::delete('/{id}', [UserController::class, 'destroy']);
+        Route::get('auth', [UserController::class, 'auth']);
+    });
+
+    Route::prefix('pontos')->group(function () {
+        Route::get('/', [PontoController::class, 'index']);
+        Route::get('users/{id}', [UserController::class, 'getPontos']);
+        Route::post('/', [PontoController::class, 'store']);
+        Route::get('/{id}', [PontoController::class, 'show']);
+        Route::put('/{id}', [PontoController::class, 'update']);
+        Route::delete('/{id}', [PontoController::class, 'destroy']);
+    });
 });
-
-Route::get('users/pontos/{id}', [UserController::class, 'getPontos']);
-
-Route::get('pontos', [PontoController::class, 'index']);
-Route::post('pontos', [PontoController::class, 'store']);
-Route::get('pontos/{id}', [PontoController::class, 'show']);
-Route::put('pontos/{id}', [PontoController::class, 'update']);
-Route::delete('pontos/{id}', [PontoController::class, 'destroy']);
-
-
-
-
- 
-
-
-
-
-
