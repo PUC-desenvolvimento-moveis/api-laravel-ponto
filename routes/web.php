@@ -30,5 +30,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/{id}', [PontoController::class, 'show']);
         Route::put('/{id}', [PontoController::class, 'update']);
         Route::delete('/{id}', [PontoController::class, 'destroy']);
-    });
+    })->middleware(['auth:sanctum']);
 });
