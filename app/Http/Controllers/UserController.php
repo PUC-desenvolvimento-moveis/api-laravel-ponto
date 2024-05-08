@@ -26,7 +26,7 @@ class UserController extends Controller
             return response()->json(["message" => "User not found"], 404);
         } catch (\Throwable $th) {
             return response()->json([
-                "error" => $th
+                "error" => $th->getMessage()
             ]);
         }
     }
@@ -41,7 +41,7 @@ class UserController extends Controller
             return response()->json(["message" => "User not found"], 404);
         } catch (\Throwable $th) {
             return response()->json([
-                "error" => $th
+                "error" => $th->getMessage()
             ]);
         }
     }
@@ -62,16 +62,15 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
-            $token = $this->service->store($request);
-            if ($token != null) {
+            $user = $this->service->store($request);
+            if ($user != null) {
                 return response()->json([
-                    'access_token' => $token,
-                    'token_type' => 'Bearer',
+                    'data' => $user,                    
                 ], 201);
             }
         } catch (\Throwable $th) {
             return response()->json([
-                "error" => $th
+                "error" => $th->getMessage()
             ]);
         }
     }
@@ -104,7 +103,7 @@ class UserController extends Controller
             ], 201);
         } catch (\Throwable $th) {
             return response()->json([
-                "error" => $th
+                "error" => $th->getMessage()
             ]);
         }
     }
@@ -120,7 +119,7 @@ class UserController extends Controller
             ], 201);
         } catch (\Throwable $th) {
             return response()->json([
-                "error" => $th
+                "error" => $th->getMessage()
             ]);
         }
     }

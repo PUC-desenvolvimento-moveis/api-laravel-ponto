@@ -17,11 +17,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('users')->group(function () {
         Route::get('/all', [UserController::class, 'index']);
-        Route::get('show/{id}', [UserController::class, 'show']);
-        Route::put('update/{id}', [UserController::class, 'update']);
-        Route::delete('destroy/{id}', [UserController::class, 'destroy']);
+        Route::get('/show/{id}', [UserController::class, 'show']);
+        Route::put('/update/{id}', [UserController::class, 'update']);
+        Route::delete('/destroy/{id}', [UserController::class, 'destroy']);
         Route::get('/auth', [UserController::class, 'auth']);
-    })->middleware(['auth:sanctum']);
+    });
 
     Route::prefix('pontos')->group(function () {
         Route::get('/', [PontoController::class, 'index']);
@@ -30,5 +30,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/{id}', [PontoController::class, 'show']);
         Route::put('/{id}', [PontoController::class, 'update']);
         Route::delete('/{id}', [PontoController::class, 'destroy']);
-    })->middleware(['auth:sanctum']);
+    });
 });

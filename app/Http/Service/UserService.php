@@ -30,14 +30,13 @@ class UserService
 
     public function login(Request $request)
     {
-        if (!Auth::attempt($request->only('email', 'password'))) 
+        if (!Auth::attempt($request->only('email', 'password')))
             return null;
-        
+
         $user = User::where('email', $request['email'])->firstOrFail();
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return $token;
-            
     }
 
 
@@ -55,13 +54,13 @@ class UserService
         return $request->user();
     }
 
-    public function store(Request $request)
+    public function store(Request $request): ?User
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'cpf' => 'required|string|min:11|max:11',
+            'cpf' => 'required|string|min:11|max:11|unique:users',
         ]);
 
         $user = User::create([
@@ -69,12 +68,13 @@ class UserService
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
             'telefene' => $request->telefene ?? null,
+            'cpf'=>$validatedData['cpf'],
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         if (!empty($user))
-            return $token;
+            return $user;
 
         return null;
     }
