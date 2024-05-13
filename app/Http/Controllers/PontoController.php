@@ -18,29 +18,6 @@ class PontoController extends Controller
         return response()->json($pontos);
     }
 
-    /*     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'data_hora_inicial' => 'required|date_format:Y-m-d H:i:s',
-            'data_hora_final' => 'required|date_format:Y-m-d H:i:s',
-            'user_id' => 'required|exists:users,id'
-        ]);
-
-        $dataHoraInicial = Carbon::parse($validatedData['data_hora_inicial']);
-        $dataHoraFinal = Carbon::parse($validatedData['data_hora_final']);
-        $horasTrabalhadas = $dataHoraFinal->diffInMinutes($dataHoraInicial);
-
-        $ponto = Ponto::create([
-            'data_hora_inicial' => $dataHoraInicial,
-            'data_hora_final' => $dataHoraFinal,
-            'horas_trabalhadas_dia' => $horasTrabalhadas,
-            'user_id' => $validatedData['user_id'],
-        ]);
-
-        return response()->json(['message' => 'Ponto criado com sucesso', 'ponto' => $ponto], 201);
-    } */
-
-
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -58,7 +35,6 @@ class PontoController extends Controller
     }
 
     
-
     public function show($id)
     {
         $ponto = Ponto::find($id);

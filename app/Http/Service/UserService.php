@@ -98,7 +98,8 @@ class UserService
     public function destroy($id): bool
     {
         $user = User::find($id);
-        return !$user == false;
+        if(!$user)
+        return false;
 
         $user->delete();
         return true;
