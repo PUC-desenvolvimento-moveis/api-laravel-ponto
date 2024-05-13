@@ -125,8 +125,8 @@ class UserController extends Controller
     }
 
 
-    public function getPontos(int $id)
+    public function get_pontos(int $id)
     {
-        return response()->json($this->service->getPontos($id), 201);
+        return response()->json($this->service->get_pontos($id), 201);
     }
 }

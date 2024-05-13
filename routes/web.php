@@ -13,9 +13,10 @@ Route::prefix('v1')->group(function () {
 });
 
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::prefix('api')->middleware(['auth:sanctum'])->group(function () {
 
-    Route::prefix('users')->group(function () {
+
+    Route::prefix('/users')->group(function () {
         Route::get('/all', [UserController::class, 'index']);
         Route::get('/show/{id}', [UserController::class, 'show']);
         Route::put('/update/{id}', [UserController::class, 'update']);
@@ -23,12 +24,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/auth', [UserController::class, 'auth']);
     });
 
-    Route::prefix('pontos')->group(function () {
-        Route::get('/', [PontoController::class, 'index']);
-        Route::get('users/{id}', [UserController::class, 'getPontos']);
-        Route::post('/', [PontoController::class, 'store']);
-        Route::get('/{id}', [PontoController::class, 'show']);
-        Route::put('/{id}', [PontoController::class, 'update']);
-        Route::delete('/{id}', [PontoController::class, 'destroy']);
+    Route::prefix('/pontos')->group(function () {
+        Route::get('/all', [PontoController::class, 'index']);
+        Route::get('users/{id}', [UserController::class, 'get_pontos']);
+        Route::post('/store', [PontoController::class, 'store']);
+        Route::get('/show{id}', [PontoController::class, 'show']);
+        Route::put('/update/{id}', [PontoController::class, 'update']);
+        Route::put('/final/{id}', [PontoController::class, 'bater_ponto_final']);
+        Route::delete('destroy/{id}', [PontoController::class, 'destroy']);
     });
 });

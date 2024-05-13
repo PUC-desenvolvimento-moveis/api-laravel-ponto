@@ -2,75 +2,114 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ponto;
-use Illuminate\Http\Request;
-
 use Carbon\Carbon;
+use App\Models\Ponto;
+
+use Illuminate\Http\Request;
+use App\Http\Service\PontoService;
 
 class PontoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected PontoService $service;
+
+    public function __construct(PontoService $service)
+    {
+        $this->service = $service;
+    }
+
     public function index()
     {
-        $pontos = Ponto::all();
-        return response()->json($pontos);
+        try {
+            $pontos = $this->service->index();
+            return response()->json($pontos);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "error" => $th->getMessage()
+            ]);
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $ponto = $this->service->show($id);
+            if ($ponto) {
+                return response()->json($ponto);
+            }
+            return response()->json(["message" => "Ponto not found"], 404);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "error" => $th->getMessage()
+            ]);
+        }
     }
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'data_hora_inicial' => 'required|date_format:Y-m-d H:i:s',
-            'user_id' => 'required|exists:users,id'
-        ]);
-
-        $ponto = Ponto::create([
-            'data_hora_inicial' => $validatedData['data_hora_inicial'],
-            'data_hora_final' => $request->data_hora_final,
-            'user_id' => $validatedData['user_id'],
-        ]);
-        
-            return response()->json(['message' => 'Ponto criado com sucesso', 'ponto' => $ponto], 201);         
-    }
-
-    
-    public function show($id)
-    {
-        $ponto = Ponto::find($id);
-        return response()->json($ponto);
+        try {
+            $ponto = $this->service->store($request);
+            if ($ponto != null) {
+                return response()->json([
+                    'data' => $ponto,
+                ], 201);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                "error" => $th->getMessage()
+            ]);
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $ponto = Ponto::findOrFail($id);
+        try {
+            if ($this->service->update($request, $id) == null) {
+                return response()->json(["message" => "Ponto not found"], 404);
+            }
 
-        $validatedData = $request->validate([
-            'data_hora_inicial' => 'required|date_format:Y-m-d H:i:s',
-            'data_hora_final' => 'required|date_format:Y-m-d H:i:s',
-            'user_id' => 'required|exists:users,id'
-        ]);
-
-        $dataHoraInicial = Carbon::parse($validatedData['data_hora_inicial']);
-        $dataHoraFinal = Carbon::parse($validatedData['data_hora_final']);
-        $horasTrabalhadas = $dataHoraFinal->diffInMinutes($dataHoraInicial);
-
-        $ponto->update([
-            'data_hora_inicial' => $dataHoraInicial,
-            'data_hora_final' => $dataHoraFinal,
-            'horas_trabalhadas_dia' => $horasTrabalhadas,
-            'user_id' => $validatedData['user_id'],
-        ]);
-
-        return response()->json(['message' => 'Ponto atualizado com sucesso', 'ponto' => $ponto], 201);
+            return response()->json([
+                "message" => "Ponto updated successfully"
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "error" => $th->getMessage()
+            ]);
+        }
     }
-
 
     public function destroy($id)
     {
-        $ponto = Ponto::findOrFail($id);
-        $ponto->delete();
+        try {
+            if (!$this->service->destroy($id)) {
+                return response()->json(["message" => "Ponto not found"], 404);
+            }
 
-        return response()->json(['message' => 'Ponto removido com sucesso']);
+            return response()->json([
+                "message" => "Ponto deleted successfully"
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "error" => $th->getMessage()
+            ]);
+        }
+    }
+
+    public function bater_ponto_final(Request $request, $id)
+    {
+        try {
+            $ponto_final=$this->service->bater_ponto_final($request, $id);
+            if ( $ponto_final== null) {
+                return response()->json(["message" => "não encontrado"], 404);
+            }
+
+            return response()->json([
+                "message" => "successfully",
+                "data"=> $ponto_final
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "error" => $th->getMessage()
+            ]);
+        }
     }
 }

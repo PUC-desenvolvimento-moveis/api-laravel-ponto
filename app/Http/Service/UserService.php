@@ -40,7 +40,7 @@ class UserService
     }
 
 
-    public function getPontos($id): ?Collection
+    public function get_pontos($id): ?Collection
     {
         $user = User::find($id);
         if ($user->pontos)
