@@ -56,7 +56,7 @@ class UserService
 
     public function store(Request $request): ?User
     {
-        $validatedData = $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
@@ -64,11 +64,11 @@ class UserService
         ]);
 
         $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
             'telefene' => $request->telefene ?? null,
-            'cpf'=>$validatedData['cpf'],
+            'cpf' => $validated['cpf'],
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -98,8 +98,7 @@ class UserService
     public function destroy($id): bool
     {
         $user = User::find($id);
-        if (!$user)
-            return false;
+        return !$user == false;
 
         $user->delete();
         return true;

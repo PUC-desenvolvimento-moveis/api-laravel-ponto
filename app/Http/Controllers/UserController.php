@@ -65,7 +65,7 @@ class UserController extends Controller
             $user = $this->service->store($request);
             if ($user != null) {
                 return response()->json([
-                    'data' => $user,                    
+                    'data' => $user,
                 ], 201);
             }
         } catch (\Throwable $th) {
@@ -88,7 +88,7 @@ class UserController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
-        ],201);
+        ], 201);
     }
 
 
