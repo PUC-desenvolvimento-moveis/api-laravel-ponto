@@ -6,15 +6,18 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PontoController;
 
 
+/* caso usuario nao estaja authenticado */
+Route::get('/unauthenticated', [UserController::class, 'unauthenticated'])->name('login');
 
+
+/* rotas iniciais para registro e authenticacao */
 Route::prefix('v1')->group(function () {
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/register', [UserController::class, 'store']);
 });
 
-
+/*endpoints com acesso authenticado  */
 Route::prefix('api')->middleware(['auth:sanctum'])->group(function () {
-
 
     Route::prefix('/users')->group(function () {
         Route::get('/all', [UserController::class, 'index']);
