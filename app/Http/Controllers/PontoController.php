@@ -44,7 +44,7 @@ class PontoController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function ponto_inicial(Request $request)
     {
         try {
             $ponto = $this->service->store($request);

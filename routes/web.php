@@ -30,7 +30,7 @@ Route::prefix('api')->middleware(['auth:sanctum'])->group(function () {
     Route::prefix('/pontos')->group(function () {
         Route::get('/all', [PontoController::class, 'index']);
         Route::get('users/{id}', [UserController::class, 'get_pontos']);
-        Route::post('/store', [PontoController::class, 'store']);
+        Route::post('/inicial', [PontoController::class, 'ponto_inicial']);
         Route::get('/show{id}', [PontoController::class, 'show']);
         Route::put('/update/{id}', [PontoController::class, 'update']);
         Route::put('/final/{id}', [PontoController::class, 'bater_ponto_final']);
