@@ -31,7 +31,7 @@ class PontoService
             ->orderBy('data_hora_inicial', 'desc')
             ->first();
     
-        // Verifica se existe um ponto registrado para o usuário
+        
         if ($verifica_ponto) {
             $data_hora_inicial = Carbon::parse($verifica_ponto->data_hora_inicial);
             // Verifica se a data e hora atual é anterior à data e hora inicial do ponto mais recente
