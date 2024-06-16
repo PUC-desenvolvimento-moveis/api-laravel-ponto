@@ -68,7 +68,7 @@ class PontoController extends Controller
             }
 
             return response()->json([
-                "message" => "Ponto updated successfully"
+                "request" => $this->service->update($request, $id)
             ], 201);
         } catch (\Throwable $th) {
             return response()->json([
@@ -99,7 +99,7 @@ class PontoController extends Controller
         try {
             $ponto_final=$this->service->bater_ponto_final($request, $id);
             if ( $ponto_final== null) {
-                return response()->json(["message" => "não encontrado"], 404);
+                return response()->json(["message" => "Ponto não encontrado"], 404);
             }
 
             return response()->json([

@@ -13,7 +13,7 @@ class Ponto extends Model
         'id',
         'data_hora_inicial',
         'data_hora_final',
-        'horas_trabalhadas_dia',
+        'minutos_trabalhados_dia',
         'user_id',
         'tipo',
         'empresa_id'

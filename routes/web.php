@@ -32,7 +32,8 @@ Route::prefix('api')->middleware(['auth:sanctum'])->group(function () {
         Route::get('users/{id}', [UserController::class, 'get_pontos']);
         Route::post('/inicial', [PontoController::class, 'ponto_inicial']);
         Route::get('/show{id}', [PontoController::class, 'show']);
-        Route::put('/update/{id}', [PontoController::class, 'update']);
+        Route::patch('/update/{id}', [PontoController::class, 'update']);
+        Route::patch('/update_hora_final/{id}', [PontoController::class, 'update_hora_final']);
         Route::put('/final/{id}', [PontoController::class, 'bater_ponto_final']);
         Route::delete('destroy/{id}', [PontoController::class, 'destroy']);
     });
