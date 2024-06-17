@@ -7,19 +7,19 @@ use App\Http\Controllers\PontoController;
 
 
 /* caso usuario nao estaja authenticado */
-Route::get('/unauthenticated', [UserController::class, 'unauthenticated'])->name('login');
+Route::get('/unauthenticated', [UserController::class, 'unauthenticated'])->name('login')->middleware(['cors']);
 
 
 /* rotas iniciais para registro e authenticacao */
-Route::prefix('v1')->group(function () {
+Route::prefix('v1')->middleware(['cors'])->group(function () {
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/register', [UserController::class, 'store']);
 });
 
 /*endpoints com acesso authenticado  */
-Route::prefix('api')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('api')->middleware(['auth:sanctum','cors'])->group(function () {
 
-    Route::prefix('/users')->group(function () {
+    Route::prefix('/users')->middleware(['cors'])->group(function () {
         Route::get('/all', [UserController::class, 'index']);
         Route::get('/show/{id}', [UserController::class, 'show']);
         Route::put('/update/{id}', [UserController::class, 'update']);
@@ -27,7 +27,7 @@ Route::prefix('api')->middleware(['auth:sanctum'])->group(function () {
         Route::get('/auth', [UserController::class, 'auth']);
     });
 
-    Route::prefix('/pontos')->group(function () {
+    Route::prefix('/pontos')->middleware(['cors'])->group(function () {
         Route::get('/all', [PontoController::class, 'index']);
         Route::get('users/{id}', [UserController::class, 'get_pontos']);
         Route::post('/inicial', [PontoController::class, 'ponto_inicial']);
