@@ -46,6 +46,22 @@ class UserController extends Controller
         }
     }
 
+
+    public function getuserbyemail($email)
+    {
+        try {
+            $user = $this->service->getuserbyemail($email);
+            if ($user)
+                return response()->json($user, 201);
+
+            return response()->json(["message" => "User not found"], 404);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "error" => $th->getMessage()
+            ]);
+        }
+    }
+
     public function auth(Request $request)
     {
         $auth = $this->service->auth($request);

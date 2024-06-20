@@ -36,12 +36,10 @@ class PontoService
 
         if ($verifica_ponto) {
             $data_hora_inicial = Carbon::parse($verifica_ponto->data_hora_inicial);
-            // Verifica se a data e hora atual é anterior à data e hora inicial do ponto mais recente
             if (now()->lessThan($data_hora_inicial)) {
                 return response()->json(['error' => 'Data e hora atual é anterior à data e hora inicial do ponto mais recente.'], 400);
             }
 
-            // Verifica se a data atual é a mesma do ponto mais recente
             if ($data_hora_inicial->isSameDay(now())) {
                 return response()->json(['error' => 'Já existe um ponto registrado para esse dia.'], 400);
             }

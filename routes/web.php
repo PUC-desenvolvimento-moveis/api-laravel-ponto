@@ -22,6 +22,7 @@ Route::prefix('api')->middleware(['auth:sanctum','cors'])->group(function () {
     Route::prefix('/users')->middleware(['cors'])->group(function () {
         Route::get('/all', [UserController::class, 'index']);
         Route::get('/show/{id}', [UserController::class, 'show']);
+        Route::get('/byemail/{email}', [UserController::class, 'getuserbyemail']);
         Route::put('/update/{id}', [UserController::class, 'update']);
         Route::delete('/destroy/{id}', [UserController::class, 'destroy']);
         Route::get('/auth', [UserController::class, 'auth']);

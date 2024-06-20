@@ -28,6 +28,16 @@ class UserService
     }
 
 
+    public function getuserbyemail($email): ?User
+    {
+        $user=User::where('email',$email)->first();
+        if (isset($user))
+        return $user;
+
+        return null;
+    }
+
+
     public function login(Request $request)
     {
         if (!Auth::attempt($request->only('email', 'password')))
