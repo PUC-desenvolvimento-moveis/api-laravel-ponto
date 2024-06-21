@@ -122,21 +122,15 @@ class PontoController extends Controller
         $user->pontos->each(function ($item) use (&$total_minutos_trabalhados) {
             $total_minutos_trabalhados += $item->minutos_trabalhados_dia;
         });
-
-        // Converter minutos em horas e minutos
-        $horas = floor($total_minutos_trabalhados / 60);
-        $minutos = $total_minutos_trabalhados % 60;
-
         if ($total_minutos_trabalhados != 0) {
             return response()->json([
                 "message" => "successfully",
-                "total_horas_trabalhadas" => $horas,
-                "total_minutos_trabalhados" => $minutos
+                "total_minutos_trabalhados" => $total_minutos_trabalhados
             ], 201);
         }
 
         return response()->json([
             "error" => 'erro ao somar minutos trabalhados'
-        ], 201);
+        ],201);
     }
 }
