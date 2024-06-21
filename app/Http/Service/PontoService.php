@@ -39,10 +39,6 @@ class PontoService
             if (now()->lessThan($data_hora_inicial)) {
                 return response()->json(['error' => 'Data e hora atual é anterior à data e hora inicial do ponto mais recente.'], 400);
             }
-
-            if ($data_hora_inicial->isSameDay(now())) {
-                return response()->json(['error' => 'Já existe um ponto registrado para esse dia.'], 400);
-            }
         }
 
         $ponto = Ponto::create([
@@ -172,15 +168,6 @@ class PontoService
                 return $flag_ponto_dia = true;
             }
         });
-
-        if ($flag_ponto_dia) {
-            return response()->json(['error' => 'Você já bateu seu ponto neste dia.'], 400);
-        }
-
-        // Verifica se a data atual é a mesma do ponto mais recente
-        if ($ponto_data_hora_final != null) {
-            return response()->json(['error' => 'Voce ja bateu seu ponto final.'], 400);
-        }
 
         $horas_trabalhadas_em_minuto = $data_hora_inicial->diffInMinutes($data_hora_final);
         $ponto->update([

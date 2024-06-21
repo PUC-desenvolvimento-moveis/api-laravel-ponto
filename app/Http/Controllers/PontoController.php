@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Models\Ponto;
+use App\Models\User;
 
+use App\Models\Ponto;
 use Illuminate\Http\Request;
 use App\Http\Service\PontoService;
 
@@ -97,19 +98,45 @@ class PontoController extends Controller
     public function bater_ponto_final(Request $request, $id)
     {
         try {
-            $ponto_final=$this->service->bater_ponto_final($request, $id);
-            if ( $ponto_final== null) {
+            $ponto_final = $this->service->bater_ponto_final($request, $id);
+            if ($ponto_final == null) {
                 return response()->json(["message" => "Ponto não encontrado"], 404);
             }
 
             return response()->json([
                 "message" => "successfully",
-                "data"=> $ponto_final
+                "data" => $ponto_final
             ], 201);
         } catch (\Throwable $th) {
             return response()->json([
                 "error" => $th->getMessage()
             ]);
         }
+    }
+
+
+    public function soma_minutos_trabalhados($id)
+    {
+        $total_minutos_trabalhados = 0;
+        $user = User::find($id);
+        $user->pontos->each(function ($item) use (&$total_minutos_trabalhados) {
+            $total_minutos_trabalhados += $item->minutos_trabalhados_dia;
+        });
+
+        // Converter minutos em horas e minutos
+        $horas = floor($total_minutos_trabalhados / 60);
+        $minutos = $total_minutos_trabalhados % 60;
+
+        if ($total_minutos_trabalhados != 0) {
+            return response()->json([
+                "message" => "successfully",
+                "total_horas_trabalhadas" => $horas,
+                "total_minutos_trabalhados" => $minutos
+            ], 201);
+        }
+
+        return response()->json([
+            "error" => 'erro ao somar minutos trabalhados'
+        ], 201);
     }
 }
