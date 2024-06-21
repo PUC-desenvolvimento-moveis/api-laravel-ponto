@@ -115,22 +115,33 @@ class PontoController extends Controller
     }
 
 
+
     public function soma_minutos_trabalhados($id)
     {
+        
         $total_minutos_trabalhados = 0;
         $user = User::find($id);
         $user->pontos->each(function ($item) use (&$total_minutos_trabalhados) {
             $total_minutos_trabalhados += $item->minutos_trabalhados_dia;
         });
+        // Converter minutos para horas, minutos e segundos
+        $horas = floor($total_minutos_trabalhados / 60);
+        $minutos = $total_minutos_trabalhados % 60;
+        $segundos = 0; // Sempre será 0, pois não temos os segundos
+        $microssegundos = 0; // Sempre será 0, pois não temos os microssegundos
+    
+        // Formatar a string no formato 00:01:02.0000
+        $formatted_time = sprintf('%02d:%02d:%02d.%04d', $horas, $minutos, $segundos, $microssegundos);
+    
         if ($total_minutos_trabalhados != 0) {
             return response()->json([
                 "message" => "successfully",
-                "total_minutos_trabalhados" => $total_minutos_trabalhados
+                "total_minutos_trabalhados" => $formatted_time
             ], 201);
         }
-
+    
         return response()->json([
             "error" => 'erro ao somar minutos trabalhados'
-        ],201);
+        ], 201);
     }
 }
