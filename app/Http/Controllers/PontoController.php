@@ -141,12 +141,13 @@ class PontoController extends Controller
         if ($total_minutos_trabalhados != 0) {
             return response()->json([
                 "message" => "successfully",
-                "total_horas_trabalhadas" => $formatted_time
+                "total_horas_trabalhadas" => $formatted_time,
+                "lista_de_apropriacao"=>$pontos
             ], 201);
         }
     
         return response()->json([
-            "error" => 'erro ao somar minutos trabalhados'
+            "data" => []
         ], 201);
     }
 
@@ -176,12 +177,13 @@ class PontoController extends Controller
         if ($total_minutos_trabalhados != 0) {
             return response()->json([
                 "message" => "successfully",
-                "total_horas_trabalhadas" => $formatted_time
+                "total_horas_trabalhadas" => $formatted_time,
+                "lista_de_apropriacao"=>$pontos
             ], 201);
         }
 
         return response()->json([
-            "error" => 'erro ao somar minutos trabalhados'
+            "data" => []
         ], 201);
     }
 
@@ -192,7 +194,7 @@ class PontoController extends Controller
 
         $total_minutos_trabalhados = 0;
         $user = User::find($id);
-        $user->pontos->each(function ($item) use (&$total_minutos_trabalhados) {
+        $pontos=$user->pontos->each(function ($item) use (&$total_minutos_trabalhados) {
             $total_minutos_trabalhados += $item->minutos_trabalhados_dia;
         });
         // Converter minutos para horas, minutos e segundos
@@ -207,12 +209,13 @@ class PontoController extends Controller
         if ($total_minutos_trabalhados != 0) {
             return response()->json([
                 "message" => "successfully",
-                "total_horas_trabalhadas" => $formatted_time
+                "total_horas_trabalhadas" => $formatted_time,
+                "lista_de_apropriacao"=>$pontos
             ], 201);
         }
 
         return response()->json([
-            "error" => 'erro ao somar minutos trabalhados'
+            "data" => []
         ], 201);
     }
 }
