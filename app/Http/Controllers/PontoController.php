@@ -140,7 +140,6 @@ class PontoController extends Controller
     
         if ($total_minutos_trabalhados != 0) {
             return response()->json([
-                "message" => "successfully",
                 "total_horas_trabalhadas" => $formatted_time,
                 "lista_de_apropriacao"=>$pontos
             ], 201);
@@ -176,7 +175,6 @@ class PontoController extends Controller
 
         if ($total_minutos_trabalhados != 0) {
             return response()->json([
-                "message" => "successfully",
                 "total_horas_trabalhadas" => $formatted_time,
                 "lista_de_apropriacao"=>$pontos
             ], 201);
@@ -208,7 +206,6 @@ class PontoController extends Controller
 
         if ($total_minutos_trabalhados != 0) {
             return response()->json([
-                "message" => "successfully",
                 "total_horas_trabalhadas" => $formatted_time,
                 "lista_de_apropriacao"=>$pontos
             ], 201);
