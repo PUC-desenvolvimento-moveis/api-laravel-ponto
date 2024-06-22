@@ -121,7 +121,7 @@ class PontoController extends Controller
         $total_minutos_trabalhados = 0;
         $user = User::find($id);
         $pontos = $user->pontos;
-        $pontos = $pontos->whereBetween('created_at', [
+        $pontos = $pontos->whereBetween('data_hora_final', [
             Carbon::parse($data)->startOfDay(),
             Carbon::parse($data)->endOfDay()
         ]);
@@ -146,7 +146,7 @@ class PontoController extends Controller
         }
     
         return response()->json([
-            "data" => []
+            "data" => [ $data,$total_minutos_trabalhados,$pontos]
         ], 201);
     }
 
@@ -156,7 +156,7 @@ class PontoController extends Controller
         $total_minutos_trabalhados = 0;
         $user = User::find($id);
         $pontos = $user->pontos;
-        $pontos = $pontos->whereBetween('created_at', [
+        $pontos = $pontos->whereBetween('data_hora_final', [
             Carbon::parse($data_inicial)->startOfDay(),
             Carbon::parse($data_final)->endOfDay()
         ]);
@@ -181,7 +181,7 @@ class PontoController extends Controller
         }
 
         return response()->json([
-            "data" => []
+            "data" => [$data_inicial,$data_final,$total_minutos_trabalhados,$pontos]
         ], 201);
     }
 
@@ -212,7 +212,7 @@ class PontoController extends Controller
         }
 
         return response()->json([
-            "data" => []
+            "data" => [$total_minutos_trabalhados,$pontos]
         ], 201);
     }
 }
