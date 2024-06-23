@@ -20,7 +20,7 @@ class PontoSeeder extends Seeder
 
        // Para cada usuário, criar múltiplas apropriações
        foreach ($users as $user) {
-           Ponto::factory()->count(23)->create(['user_id' => $user->id]);
+           Ponto::factory()->count(60)->create(['user_id' => $user->id]);
        }
     }
 }
