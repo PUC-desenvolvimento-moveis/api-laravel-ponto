@@ -128,25 +128,26 @@ class PontoController extends Controller
         $pontos->each(function ($item) use (&$total_minutos_trabalhados) {
             $total_minutos_trabalhados += $item->minutos_trabalhados_dia;
         });
-    
+
         // Converter minutos para horas, minutos e segundos
         $horas = floor($total_minutos_trabalhados / 60);
         $minutos = $total_minutos_trabalhados % 60;
         $segundos = 0; // Sempre será 0, pois não temos os segundos
         $microssegundos = 0; // Sempre será 0, pois não temos os microssegundos
-    
+
         // Formatar a string no formato 00:01:02.0000
         $formatted_time = sprintf('%02d:%02d:%02d.%04d', $horas, $minutos, $segundos, $microssegundos);
-    
+
         if ($total_minutos_trabalhados != 0) {
             return response()->json([
+                "total_horas_trabalhadas_em_minutos" => $total_minutos_trabalhados,
                 "total_horas_trabalhadas" => $formatted_time,
-                "lista_de_apropriacao"=>$pontos
+                "lista_de_apropriacao" => $pontos
             ], 201);
         }
-    
+
         return response()->json([
-            "data" => [ $data,$total_minutos_trabalhados,$pontos]
+            "data" => [$data, $total_minutos_trabalhados, $pontos]
         ], 201);
     }
 
@@ -175,13 +176,14 @@ class PontoController extends Controller
 
         if ($total_minutos_trabalhados != 0) {
             return response()->json([
+                "total_horas_trabalhadas_em_minutos" => $total_minutos_trabalhados,
                 "total_horas_trabalhadas" => $formatted_time,
-                "lista_de_apropriacao"=>$pontos
+                "lista_de_apropriacao" => $pontos
             ], 201);
         }
 
         return response()->json([
-            "data" => [$data_inicial,$data_final,$total_minutos_trabalhados,$pontos]
+            "data" => [$data_inicial, $data_final, $total_minutos_trabalhados, $pontos]
         ], 201);
     }
 
@@ -192,7 +194,7 @@ class PontoController extends Controller
 
         $total_minutos_trabalhados = 0;
         $user = User::find($id);
-        $pontos=$user->pontos->each(function ($item) use (&$total_minutos_trabalhados) {
+        $pontos = $user->pontos->each(function ($item) use (&$total_minutos_trabalhados) {
             $total_minutos_trabalhados += $item->minutos_trabalhados_dia;
         });
         // Converter minutos para horas, minutos e segundos
@@ -206,13 +208,43 @@ class PontoController extends Controller
 
         if ($total_minutos_trabalhados != 0) {
             return response()->json([
+                "total_horas_trabalhadas_em_minutos" => $total_minutos_trabalhados,
                 "total_horas_trabalhadas" => $formatted_time,
-                "lista_de_apropriacao"=>$pontos
+                "lista_de_apropriacao" => $pontos
             ], 201);
         }
 
         return response()->json([
-            "data" => [$total_minutos_trabalhados,$pontos]
+            "data" => [$total_minutos_trabalhados, $pontos]
+        ], 201);
+    }
+
+    public function verify_horas_ponto_por_dia($total_minutos_trabalhados)
+    {
+
+        if ($total_minutos_trabalhados >= 480) {
+            return  response()->json([
+                "response" => "Voce cumpriu suas horas deste dia !!",
+            ], 201);
+        }
+
+
+        return  response()->json([
+            "response" => "Voce ainda nao cumpriu suas deste dia !!",
+        ], 201);
+    }
+
+    public function verify_horas_ponto_por_mes($total_minutos_trabalhados)
+    {
+
+        if ($total_minutos_trabalhados < 9600) {
+            return  response()->json([
+                "response" => "Voce ainda nao  bateu suas horas mensais neste intervalo de tempo pesquisado !!",
+            ], 201);
+        }
+
+        return  response()->json([
+            "response" => "Voce ja  bateu suas horas mensais neste intervalo de tempo pesquisado !!",
         ], 201);
     }
 }

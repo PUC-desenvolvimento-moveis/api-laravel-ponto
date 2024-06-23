@@ -40,5 +40,7 @@ Route::prefix('api')->middleware(['auth:sanctum','cors'])->group(function () {
         Route::get('/soma_minutos_trabalhados/{id}', [PontoController::class, 'soma_minutos_trabalhados']);
         Route::get('/soma_minutos_trabalhados_por_periodo/{id}/{data_inicial}/{data_final}', [PontoController::class, 'soma_minutos_trabalhados_por_periodo']);
         Route::get('/soma_minutos_trabalhados_por_data/{id}/{data}', [PontoController::class, 'soma_minutos_trabalhados_por_data']);
+        Route::get('/verify_horas_ponto_por_dia/{minutos_trabalhados}', [PontoController::class, 'verify_horas_ponto_por_dia']);
+        Route::get('/verify_horas_ponto_por_mes/{minutos_trabalhados}', [PontoController::class, 'verify_horas_ponto_por_mes']);
     });
 });
