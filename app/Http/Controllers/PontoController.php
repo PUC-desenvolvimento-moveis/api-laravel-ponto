@@ -230,7 +230,7 @@ class PontoController extends Controller
 
 
         return  response()->json([
-            "response" => "Voce ainda nao cumpriu suas deste dia !!",
+            "response" => "Voce ainda nao cumpriu suas horas deste dia !!",
         ], 201);
     }
 
